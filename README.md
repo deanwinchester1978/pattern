@@ -1,13 +1,15 @@
 # patterns
 PATTERNS is a JS utility library to implement common design pattern for speeding up the development process. The below are the examples for using.
 
-*Example 1 - Interface*
-var spec = Interface.define(<br/>
-{<br/>
-methodA : Interface.METHOD,<br/>
-methodB : Interface.METHOD<br/>
-}<br/>
-);<br/>
+## Example 1 - Interface
+```javascript
+var spec = Interface.define(
+   {
+      methodA : Interface.METHOD,<br/>
+      methodB : Interface.METHOD<br/>
+   }
+);
+```
 
 spec.implementBy( {<br/>
 methodA : function(args) {<br/>
