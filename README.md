@@ -79,102 +79,114 @@ console.log("methodB = " + spec.call('methodA', {
 ```
 
 ## Example 3 - Builder Pattern
-// define Interface<br/>
-var IProcess = Interface.define( {<br/>
-step1 : Interface.METHOD,<br/>
-setp2 : Interface.METHOD,<br/>
-step3 : Interface.METHOD<br/>
-});<br/>
-<br/>
-// define builder class<br/>
-var Process = Class.define(<br/>
-{<br/>
-sum : 0,<br/>
-step1 : function() {<br/>
-this.sum = this.sum + 1<br/>
-},<br/>
-step2 : function() {<br/>
-this.sum = this.sum + 2<br/>
-},<br/>
-step3 : function() {<br/>
-this.sum = this.sum + 3<br/>
-}<br/>
-}<br/>
-);<br/>
-// define a child class from builder class Process<br/>
-var Process2 = Process.extend({<br/>
-step2: function() {<br/>
-this.sum = this.sum + 200;<br/>
-}<br/>
-});<br/>
 
-//define director class (buildProcess)<br/>
-var buildProcess = BuilderPattern.define(IProcess, ['step1', 'step2', 'step3'] );<br/>
-<br/>
-// run Process class with director<br/>
-var result = buildProcess.build( Process.create(null) );<br/>
-console.log("result = " + result.sum); // result = 6<br/>
-<br/>
-// run Process2 class with the same director<br/>
-var result2 = buildProcess.build( Process2.create(null) );<br/>
-console.log("result2 = " + result2.sum);  // result = 204<br/>
-<br/>
-Example 4 - Service Locator Pattern
------------------------------------
-// define service<br/>var IService = Interface.define({<br>
- methodA: Interface.METHOD<br>
-});<br>
-<br>
-// define locators<br>
-var targetService = "service1";<br>var serviceLocator = ServiceLocatorPattern.define(IService,<br>
- function() {<br>
-  var serviceId = null;<br>
-  switch (targetService) {<br>
-case "service1":<br>
- serviceId = "serviceA";<br>
- break;<br>
-case "service2":<br>
- serviceId = "serviceB";<br>
- break;<br>
-default:<br>
- serviceId = "serviceA";<br>
-<br>
-  }<br>
-  return serviceId;<br>
- }<br>
-);<br>
-<br>
-// define actual services<br>
-var ServiceClassA = Class.define({<br>
- sum: 0,<br>
- methodA: function(args) {<br>
-  var p1 = args['p1'];<br>
-  this.sum = this.sum + p1;<br>
-  return this.sum;<br>
- }<br>
-});<br>
-<br>
-var ServiceClassB = Class.define({<br>
- sum: 0,<br>
- methodA: function(args) {<br>
-  var p1 = args['p1'];<br>
-  this.sum = this.sum + p1 * 2;<br>
-  return this.sum;<br>
- }<br>
-});<br>
-<br>
-// register services<br>
-serviceLocator.register("serviceA", ServiceClassA.create(null));<br>
-serviceLocator.register("serviceB", ServiceClassB.create(null));<br>
-<br>
-var service = null;<br>
-service = serviceLocator.locateService();<br>
-console.log( service.call("methodA", {p1: 1}) );<br>
-console.log( service.call("methodA", {p1: 1}) );<br>
-console.log();<br>
-<br>
-// change service target<br>
-targetService = "service2";<br>
-service = serviceLocator.locateService();<br>
-console.log( service.call("methodA", {p1: 1}) );<br>
-console.log( service.call("methodA", {p1: 1}) );<br>
+``` javascript
+// define Interface
+var IProcess = Interface.define({
+   step1: Interface.METHOD,
+   setp2: Interface.METHOD,
+   step3: Interface.METHOD
+});
+
+// define builder class
+var Process = Class.define({
+   sum: 0,
+   step1: function() {
+      this.sum = this.sum + 1
+   },
+   step2: function() {
+      this.sum = this.sum + 2
+   },
+   step3: function() {
+      this.sum = this.sum + 3
+   }
+});
+// define a child class from builder class Process
+var Process2 = Process.extend({
+   step2: function() {
+      this.sum = this.sum + 200;
+   }
+});
+
+//define director class (buildProcess)
+var buildProcess = BuilderPattern.define(IProcess, ['step1', 'step2', 'step3']);
+
+// run Process class with director
+var result = buildProcess.build(Process.create(null));
+console.log("result = " + result.sum); // result = 6
+
+// run Process2 class with the same director
+var result2 = buildProcess.build(Process2.create(null));
+console.log("result2 = " + result2.sum); // result = 204
+```
+
+## Example 4 - Service Locator Pattern
+
+``` javascript
+// define servicevar IService = Interface.define({
+methodA: Interface.METHOD
+});
+
+// define locators
+var targetService = "service1";
+var serviceLocator = ServiceLocatorPattern.define(IService,
+   function() {
+      var serviceId = null;
+      switch (targetService) {
+         case "service1":
+            serviceId = "serviceA";
+            break;
+         case "service2":
+            serviceId = "serviceB";
+            break;
+         default:
+            serviceId = "serviceA";
+
+      }
+      return serviceId;
+   }
+);
+
+// define actual services
+var ServiceClassA = Class.define({
+   sum: 0,
+   methodA: function(args) {
+      var p1 = args['p1'];
+      this.sum = this.sum + p1;
+      return this.sum;
+   }
+});
+
+var ServiceClassB = Class.define({
+   sum: 0,
+   methodA: function(args) {
+      var p1 = args['p1'];
+      this.sum = this.sum + p1 * 2;
+      return this.sum;
+   }
+});
+
+// register services
+serviceLocator.register("serviceA", ServiceClassA.create(null));
+serviceLocator.register("serviceB", ServiceClassB.create(null));
+
+var service = null;
+service = serviceLocator.locateService();
+console.log(service.call("methodA", {
+   p1: 1
+}));
+console.log(service.call("methodA", {
+   p1: 1
+}));
+console.log();
+
+// change service target
+targetService = "service2";
+service = serviceLocator.locateService();
+console.log(service.call("methodA", {
+   p1: 1
+}));
+console.log(service.call("methodA", {
+   p1: 1
+}));
+```
