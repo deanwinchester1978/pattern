@@ -5,8 +5,7 @@ PATTERNS is a JS utility library to implement common design pattern for speeding
 ```javascript
 var spec = Interface.define({
    methodA: Interface.METHOD,
-   < br / >
-   methodB: Interface.METHOD < br / >
+   methodB: Interface.METHOD
 });
 
 spec.implementBy({
@@ -20,11 +19,11 @@ spec.implementBy({
 console.log("methodA = " + spec.call('methodA', {
    a: 2,
    b: 3
-})); // a + b = 5<br/>
+})); // a + b = 5
 console.log("methodB = " + spec.call('methodB', {
    a: 2,
    b: 3
-})); // null <-- no implementation<br/>
+})); // null <-- no implementation
 console.log("methodC = " + spec.call('methodC', {
    a: 2,
    b: 3
