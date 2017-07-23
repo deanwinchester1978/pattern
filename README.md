@@ -3,70 +3,82 @@ PATTERNS is a JS utility library to implement common design pattern for speeding
 
 ## Example 1 - Interface
 ```javascript
-var spec = Interface.define(
-   {
-      methodA : Interface.METHOD,<br/>
-      methodB : Interface.METHOD<br/>
+var spec = Interface.define({
+   methodA: Interface.METHOD,
+   < br / >
+   methodB: Interface.METHOD < br / >
+});
+
+spec.implementBy({
+   methodA: function(args) {
+      param1 = args['a'];
+      param2 = args['b'];
+      return param1 + param2;
    }
-);
+});
+
+console.log("methodA = " + spec.call('methodA', {
+   a: 2,
+   b: 3
+})); // a + b = 5<br/>
+console.log("methodB = " + spec.call('methodB', {
+   a: 2,
+   b: 3
+})); // null <-- no implementation<br/>
+console.log("methodC = " + spec.call('methodC', {
+   a: 2,
+   b: 3
+})); // null <-- no such methodB
 ```
 
-spec.implementBy( {<br/>
-methodA : function(args) {<br/>
-param1 = args['a'];<br/>
-param2 = args['b'];<br/>
-return param1 + param2;<br/>
-}<br/>
-} );<br/>
+## Example 2 - Class
 
-console.log("methodA = " + spec.call('methodA', {a: 2, b: 3}));// a + b = 5<br/>
-console.log("methodB = " + spec.call('methodB', {a: 2, b: 3}));// null <-- no implementation<br/>
-console.log("methodC = " + spec.call('methodC', {a: 2, b: 3}));// null <-- no such methodB<br/>
+``` javascript
+var spec = Interface.define({
+   methodA: Interface.METHOD,
+   methodB: Interface.METHOD
+});
 
-Example 2 - Class
------------------
-var spec = Interface.define(<br/>
-{<br/>
-methodA : Interface.METHOD,<br/>
-methodB : Interface.METHOD<br/>
-}<br/>
-);<br/>
+var Class1 = Class.define({
+   methodA: function(args) {
+      var a = args['a'];
+      var b = args['b'];
+      return a * b;
+   }
+});
 
-var Class1 = Class.define(<br/>
-{<br/>
-methodA : function(args) {<br/>
-var a = args['a'];<br/>
-var b = args['b'];<br/>
-return a * b;<br/>
-}<br/>
-}<br/>
-);<br/>
+// override A and add B method
+var Class2 = Class1.extend({
+   methodA: function(args) {
+      var a = args['a'];
+      var b = args['b'];
+      return a + b;
+   },
+   methodB: function(args) {
+      var a = args['a'];
+      var b = args['b'];
+      return a - b;
+   }
+})
 
-// override A and add B method<br/>
-var Class2 = Class1.extend(<br/>
-{<br/>
-methodA : function(args) {<br/>
-var a = args['a'];<br/>
-var b = args['b'];<br/>
-return a + b;<br/>
-},<br/>
-methodB : function(args) {<br/>
-var a = args['a'];<br/>
-var b = args['b'];<br/>
-return a - b;<br/>
-}<br/>
-}<br/>
-)<br/>
+spec.implementBy(Class1.create(null));
+console.log("methodA = " + spec.call('methodA', {
+   a: 2,
+   b: 3
+})); // a * b = 6
 
-spec.implementBy( Class1.create(null) );<br/>
-console.log("methodA = " + spec.call('methodA', {a: 2, b: 3})); // a * b = 6<br/>
+spec.implementBy(Class2.create(null));
+console.log("methodA = " + spec.call('methodA', {
+   a: 2,
+   b: 3
+})); // a + b = 5
+console.log("methodB = " + spec.call('methodA', {
+   a: 2,
+   b: 3
+})); // a - b = -1
+```
 
-spec.implementBy( Class2.create(null) );<br/>
-console.log("methodA = " + spec.call('methodA', {a: 2, b: 3})); // a + b = 5<br/>
-console.log("methodB = " + spec.call('methodA', {a: 2, b: 3})); // a - b = -1<br/>
-
-Example 3 - Builder Pattern
----------------------------
+## Example 3 - Builder Pattern
 // define Interface<br/>
 var IProcess = Interface.define( {<br/>
 step1 : Interface.METHOD,<br/>
