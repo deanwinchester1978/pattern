@@ -94,8 +94,7 @@ step2: function() {<br/>
 this.sum = this.sum + 200;<br/>
 }<br/>
 });<br/>
-
-// define director class (buildProcess)<br/>
+//define director class (buildProcess)<br/>
 var buildProcess = BuilderPattern.define(IProcess, ['step1', 'step2', 'step3'] );<br/>
 <br/>
 // run Process class with director<br/>
