@@ -39,6 +39,10 @@ var spec = Interface.define({
 });
 
 var Class1 = Class.define({
+   init: fucntion(args) {
+      // optional methods
+      // usually create context inside object
+   }, 
    methodA: function(args) {
       var a = args['a'];
       var b = args['b'];
