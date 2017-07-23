@@ -88,7 +88,6 @@ this.sum = this.sum + 3<br/>
 }<br/>
 }<br/>
 );<br/>
-
 // define a child class from builder class Process<br/>
 var Process2 = Process.extend({<br/>
 step2: function() {<br/>
